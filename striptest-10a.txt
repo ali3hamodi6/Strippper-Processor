@@ -1,0 +1,14 @@
+
+blank line above and below(no tabs or spaces)
+
+the blank line below has some tabs followed by a blank line which has empty spaces
+						
+                            
+the blank line below starts with tabs followed by some spaces
+					                   
+the blank line below starts with spaces followed by tabs
+                  				
+
+blank line above and below
+
+

@@ -1,0 +1,14 @@
+Code goes here and spaces after     /*one line block with tabs in back*/
+Code goes here and tabs after			/*one line block with tabs in back*/
+/*Just one line of block comment*/
+    /*one line block with space before the comment*/   
+		/*one line block with tabs before the comment*/
+/*Multiple lines
+of block comment
+*/
+/*Multiple lines
+ *
+ *of block comment
+ *
+ */
+this line is just plain code

@@ -1,0 +1,49 @@
+plain code is here
+plain code is here   // some spaces before this comment
+plain code is here		// some tabs before this comment
+plain code is here   /*    some spaces before this comment */
+        plain code is here with spaces before it
+			plain code is here with tabs before it
+
+    
+/* one line of block comment*/
+
+/**/
+
+/*just 
+a
+regular
+block
+comment */
+
+/*
+
+block comment 
+			with tabs
+   and spaces
+*/ 
+
+   
+								
+/*the 3 blank lines above
+ * are just blank lines 
+ * where the first line is a true blank line
+ * while the second line contain spaces				
+ //
+ * and the third line contain tabs
+ */
+
+// plain line comment
+			//line comment with tabs before
+   //line comment with spaces before
+
+       
+//		        
+//line above is a mix of spaces and tabs
+
+code here /*comment*/ more code here
+
+code here /*comment
+		comment*/ more code here
+
+
