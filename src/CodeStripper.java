@@ -6,7 +6,6 @@ import java.util.List;
 public class CodeStripper {
 
     private File file;
-    //private Scanner scanner;
     BufferedReader buffer;
     private String outputFile;
     private PrintWriter pw;
