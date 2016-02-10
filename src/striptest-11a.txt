@@ -1,6 +1,0 @@
-this line is only a pure code with no comment of any kind
-//This whole line is just a comment
-Some code goes here and spaces to separate the comment  //a comment
-Some code goes here and spaces to separate the comment		//a comment
-   //comment with spaces in front
-			//comment with 3 tabs in front
