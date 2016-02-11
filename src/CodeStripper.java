@@ -64,19 +64,19 @@ public class CodeStripper {
     // This enum will be used to change the flag with each iteration with each character
     // String flag is inessential for cases such as when having a comment character within a string
     enum Flag {
-        TEXT_CODE, B_L_COMMENT_BEGINNING, COMMENT_ENDING, LINE_COMMENT, BLOCK_COMMENT, STRING
+        TEXT_CODE, B_L_COMMENT_BEGINNING, COMMENT_ENDING, LINE_COMMENT, BLOCK_COMMENT, STRING, Fake_COMMENT
     }
 
 
     // ##########################################################
-    public void
-    commentsStripper(String str) {
+    public void commentsStripper(String str) {
 
         Flag flag = Flag.TEXT_CODE;
 
         StringBuilder strBldr = new StringBuilder();
         char currentChar = ' ';
         char previousChar = ' ';
+        boolean inString = false;
 
 
         for (int i = 0; i < str.length(); i++) {
@@ -117,7 +117,7 @@ public class CodeStripper {
                         flag = Flag.COMMENT_ENDING;
                     break;
                 case LINE_COMMENT:
-                    if (currentChar == '\n') {
+                    if (currentChar == '\n'|| currentChar=='\b') {
                         flag = Flag.TEXT_CODE;
                         strBldr.append(currentChar);
                     }

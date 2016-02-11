@@ -37,7 +37,7 @@ public class InputFilesManager {
             }
 
             stbr.append(".txt");
-            System.out.println(stbr.toString());
+            System.out.println("input file is "+stbr.toString());
             inputFilesGenerator(stbr.toString());
 
         }
