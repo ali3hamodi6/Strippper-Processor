@@ -4,15 +4,17 @@ import java.util.Scanner;
 public class CodeStripper {
 
     private File file;
-    BufferedReader buffer;
+    String inputFileName;
     private String outputFileName;
     private String finalString;
     private PrintWriter pw;
+    Scanner scanner;
+    Verifier verifier;
 
 
-    public CodeStripper(File file, BufferedReader br) {
+    public CodeStripper(File file, Scanner scan) {
         this.file = file;
-        this.buffer = br;
+        this.scanner = scan;
         setOutputFileName();
 
         try {
@@ -22,11 +24,12 @@ public class CodeStripper {
             pw.print(finalString);
             pw.close();
 
-
         } catch (Exception e) {
             System.out.println("PrintWriter issue");
             e.printStackTrace();
+
         }
+        verifier = new Verifier(inputFileName, outputFileName);
 
     }
 
@@ -35,98 +38,115 @@ public class CodeStripper {
     // This method will trim any blank line and a single line comment that has no spaces (a common case)
     public void LinesTrimmer() throws IOException {
 
-        String line;
         String trimmedString;
-        StringBuilder blder = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
 
+        while (scanner.hasNextLine()) {
+            String theCurrentLine = scanner.nextLine();
 
-        while ((line = buffer.readLine()) != null) {
+            if (theCurrentLine.equals("\n")) {
+                System.out.print("");
 
-            if (line.startsWith("//")) {
-                continue;
+            } else if (theCurrentLine.trim().length() == 0) {
+                System.out.print("");
+
+            } else {
+                builder.append(theCurrentLine + "\n");
             }
-
-            if (line.trim().length() == 0) {
-                continue;
-            }
-            blder.append(line);
         }//end of while
 
-        trimmedString = blder.toString();
 
-        //System.out.println("trimmed      " +trimmedString);
-        //ArrayList<Character> list = new ArrayList<Character>();
+        trimmedString = builder.toString();
+
+        System.out.println("==============Blank Lines Removed================= \n" + trimmedString +
+                "================================================");
 
         commentsStripper(trimmedString);
+
+
+        //ArrayList<Character> list = new ArrayList<Character>();
+        //testing
+        //PrintWriter tpw = new PrintWriter("zzzzzz.txt");
+        //tpw.print(trimmedString);
+        //tpw.close();
+
     }
 
     // ##########################################################
     // This enum will be used to change the flag with each iteration with each character
     // String flag is inessential for cases such as when having a comment character within a string
     enum Flag {
-        TEXT_CODE, B_L_COMMENT_BEGINNING, COMMENT_ENDING, LINE_COMMENT, BLOCK_COMMENT, STRING, Fake_COMMENT
+        POSSIBLE_COMMENT, LINE_COMMENT, BLOCK_COMMENT, IN_STRING, CODE
     }
 
 
     // ##########################################################
     public void commentsStripper(String str) {
 
-        Flag flag = Flag.TEXT_CODE;
+        Flag flag = Flag.CODE;
 
         StringBuilder strBldr = new StringBuilder();
-        char currentChar = ' ';
         char previousChar = ' ';
-        boolean inString = false;
+        char currentChar = ' ';
+        char nextChar = ' ';
+        // boolean inString = false; // Used to prevent trimming cases such as System.out.println("http://example.com")
 
 
         for (int i = 0; i < str.length(); i++) {
             currentChar = str.charAt(i);
+            if (i != str.length() - 1) {
+                nextChar = str.charAt(i + 1);
+            }
             switch (flag) {
-                case TEXT_CODE:
+                case CODE:
                     if (currentChar == '/')
-                        flag = Flag.B_L_COMMENT_BEGINNING;
-                    else if (currentChar == '"') {
-                        strBldr.append(currentChar);
-                        flag = Flag.STRING;
-                    } else {
+                        flag = Flag.POSSIBLE_COMMENT;
+                    else {
+                        if (currentChar == '"') {
+                            flag = Flag.IN_STRING;
+                        }
                         strBldr.append(currentChar);
                     }
                     break;
-                case B_L_COMMENT_BEGINNING:
+                case POSSIBLE_COMMENT:
                     if (currentChar == '/') {
                         flag = Flag.LINE_COMMENT;
                     } else if (currentChar == '*') {
                         flag = Flag.BLOCK_COMMENT;
                     } else {
-                        flag = Flag.TEXT_CODE;
+                        flag = Flag.CODE;
                         strBldr.append(previousChar + currentChar);
+
                     }
                     break;
-                case COMMENT_ENDING:
-                    if (currentChar != '*')
-                        flag = Flag.BLOCK_COMMENT;
-                    else if (currentChar == '/')
-                        flag = Flag.TEXT_CODE;
-                case STRING:
-                    if (currentChar == '"' && previousChar != '\\')
-                        flag = Flag.TEXT_CODE;
+                case IN_STRING:
+                    if (currentChar == '"')
+                        flag = Flag.CODE;
                     strBldr.append(currentChar);
                     break;
                 case BLOCK_COMMENT:
-                    if (currentChar == '*')
-                        flag = Flag.COMMENT_ENDING;
+                    if (currentChar == '*' && nextChar == '/') {
+                        flag = Flag.CODE;
+                        strBldr.append("\n");
+                    }
+
                     break;
                 case LINE_COMMENT:
-                    if (currentChar == '\n'|| currentChar=='\b') {
-                        flag = Flag.TEXT_CODE;
+                    if (currentChar == '\n') {
+                        flag = Flag.CODE;
                         strBldr.append(currentChar);
                     }
                     break;
             }//end of switch
             previousChar = currentChar;
+            //currentChar=nextChar;
         }//end of for
 
         String strippedString = strBldr.toString();
+
+        System.out.println("");
+        System.out.println("######### xxxxx ###########\n" + strippedString + "\n######### xxxxxx ############" + "\n\n");
+
         StringBuilder moreStrippedString = new StringBuilder();
         Scanner scanner = new Scanner(strippedString);
 
@@ -147,7 +167,7 @@ public class CodeStripper {
 
     public void setOutputFileName() {
 
-        String inputFileName = file.getName();
+        inputFileName = file.getName();
         StringBuilder stbr = new StringBuilder(inputFileName);
         stbr.insert(inputFileName.indexOf("."), "-out");
         outputFileName = stbr.toString();

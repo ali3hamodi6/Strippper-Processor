@@ -6,6 +6,7 @@ plain code is here   /*    some spaces before this comment */
 			plain code is here with tabs before it
 
     
+				
 /* one line of block comment*/
 
 /**/
@@ -37,13 +38,13 @@ block comment
 			//line comment with tabs before
    //line comment with spaces before
 
-       
-//		        
-//line above is a mix of spaces and tabs
+//		        		  
+line above is a line comment mixed of spaces and tabs
 
 code here /*comment*/ more code here
 
 code here /*comment
 		comment*/ more code here
 
-
+System.out.println("Shouldn't trimmed http//:www.example.com");
+System.out.println("Shouldn't trimmed /*  www.example.com");

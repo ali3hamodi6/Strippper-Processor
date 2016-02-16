@@ -1,6 +1,5 @@
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.util.Scanner;
 
 public class InputFilesManager {
 
@@ -14,33 +13,34 @@ public class InputFilesManager {
 
     public void generateInputFileNames() {
 
-        int NUMBER_OF_MY_FILES = 13;
-        String[] letters = {"a", "b", "c", "d"};
-
-        for (int i = 1; i <= NUMBER_OF_MY_FILES; i++) {
-            StringBuilder stbr = new StringBuilder();
-            String theNum = String.valueOf(i);
-            stbr.append("striptest-");
-            stbr.append(theNum);
-
-            if (i == 10) {
-                stbr.append("a");
-            }
-            if (i == 11) {
-                stbr.append("a");
-            }
-            if (i == 12) {
-                stbr.append("a");
-            }
-            if (i == 13) {
-                stbr.append("a");
-            }
-
-            stbr.append(".txt");
-            System.out.println("input file is "+stbr.toString());
-            inputFilesGenerator(stbr.toString());
-
-        }
+//        int NUMBER_OF_MY_FILES = 13;
+//        String[] letters = {"a", "b", "c", "d"};
+//
+//        for (int i = 1; i <= NUMBER_OF_MY_FILES; i++) {
+//            StringBuilder stbr = new StringBuilder();
+//            String theNum = String.valueOf(i);
+//            stbr.append("striptest-");
+//            stbr.append(theNum);
+//
+//            if (i == 10) {
+//                stbr.append("a");
+//            }
+//            if (i == 11) {
+//                stbr.append("a");
+//            }
+//            if (i == 12) {
+//                stbr.append("a");
+//            }
+//            if (i == 13) {
+//                stbr.append("a");
+//            }
+//
+//            stbr.append(".txt");
+//            System.out.println("input file is "+stbr.toString());
+//            inputFilesGenerator(stbr.toString());
+//
+//        }
+    inputFilesGenerator("striptest-13a.txt");
 
 
     }
@@ -50,8 +50,8 @@ public class InputFilesManager {
 
         try {
             File file = new File(str);
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            CodeStripper stripper = new CodeStripper(file, br);
+            Scanner scan = new Scanner(file);
+            CodeStripper stripper = new CodeStripper(file, scan);
 
         } catch (Exception e) {
 
