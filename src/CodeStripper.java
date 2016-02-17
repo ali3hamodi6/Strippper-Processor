@@ -86,32 +86,31 @@ public class CodeStripper {
         Flag flag = Flag.CODE;
 
         StringBuilder strBldr = new StringBuilder();
-        char previousChar = ' ';
-        char currentChar = ' ';
-        char nextChar = ' ';
+         previousChar = "";
+        String currentChar = "";
+        String nextChar = "";
         // boolean inString = false; // Used to prevent trimming cases such as System.out.println("http://example.com")
 
-
         for (int i = 0; i < str.length(); i++) {
-            currentChar = str.charAt(i);
+            currentChar = str.substring(i,i+1);
             if (i != str.length() - 1) {
-                nextChar = str.charAt(i + 1);
+                nextChar = str.substring((i + 1),(i+2));
             }
             switch (flag) {
                 case CODE:
-                    if (currentChar == '/')
+                    if (currentChar == "/")
                         flag = Flag.POSSIBLE_COMMENT;
                     else {
-                        if (currentChar == '"') {
+                        if (currentChar == "\"") {
                             flag = Flag.IN_STRING;
                         }
                         strBldr.append(currentChar);
                     }
                     break;
                 case POSSIBLE_COMMENT:
-                    if (currentChar == '/') {
+                    if (currentChar == "/") {
                         flag = Flag.LINE_COMMENT;
-                    } else if (currentChar == '*') {
+                    } else if (currentChar == "*") {
                         flag = Flag.BLOCK_COMMENT;
                     } else {
                         flag = Flag.CODE;
@@ -120,19 +119,20 @@ public class CodeStripper {
                     }
                     break;
                 case IN_STRING:
-                    if (currentChar == '"')
+                    if (currentChar == "\"")
                         flag = Flag.CODE;
                     strBldr.append(currentChar);
                     break;
                 case BLOCK_COMMENT:
-                    if (currentChar == '*' && nextChar == '/') {
+                    if (currentChar == "*" && nextChar =="/") {
+
                         flag = Flag.CODE;
                         strBldr.append("\n");
                     }
 
                     break;
                 case LINE_COMMENT:
-                    if (currentChar == '\n') {
+                    if (currentChar == "\n") {
                         flag = Flag.CODE;
                         strBldr.append(currentChar);
                     }
