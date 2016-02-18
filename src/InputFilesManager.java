@@ -1,10 +1,13 @@
+// Ali Hamodi
+// Principles of programming languages
+
 import java.io.File;
 import java.util.Scanner;
 
 public class InputFilesManager {
 
     private final int NUMBER_OF_FIlES = 13;
-    private String[] letters = {"a", "b", "c", "d"};
+    private String[] letters = {"a", "b", "c", "d"};  // used with files 10 11 12 13
 
 
     public InputFilesManager() {
@@ -16,7 +19,7 @@ public class InputFilesManager {
 
         for (int i = 1; i <= NUMBER_OF_FIlES; i++) {
             if (i > 9) {
-                // this for loop is to generate 10a 10b 10c 10d   11a 11b 11c 11d ... 12a 12b 12c 12d
+                // this inner for loop is to generate 10a 10b 10c 10d   11a 11b 11c 11d ... 12a 12b 12c 12d
                 for (int j = 0; j < letters.length; j++) {
                     StringBuilder stbr = new StringBuilder();
                     String theNum = String.valueOf(i);
@@ -25,7 +28,7 @@ public class InputFilesManager {
 
                     stbr.append(letters[j]);
                     stbr.append(".txt");
-                    System.out.println(stbr.toString());
+                    //System.out.println(stbr.toString());
                     inputFilesGenerator(stbr.toString());
                 }
 
@@ -36,10 +39,13 @@ public class InputFilesManager {
                 stbr.append(theNum);
 
                 stbr.append(".txt");
-                System.out.println(stbr.toString());
+                //System.out.println(stbr.toString());
                 inputFilesGenerator(stbr.toString());
             }
         } // end of for
+
+        // testing files individually
+        //inputFilesGenerator("striptest-13a.txt");
     }
 
     // #####################################################################
@@ -52,7 +58,7 @@ public class InputFilesManager {
 
         } catch (Exception e) {
 
-            System.out.println("Input file is not found");
+            System.out.println(""+ str + " Input file was not found ");
             //e.printStackTrace();
         }
 

@@ -1,9 +1,12 @@
+// Ali Hamodi
+// Principles of programming languages
+
 import java.io.*;
 import java.util.Scanner;
 
 public class CodeStripper {
 
-    private File file;
+    private File file;             //input file
     String inputFileName;
     private String outputFileName;
     private String finalString;
@@ -25,10 +28,8 @@ public class CodeStripper {
         } catch (Exception e) {
             System.out.println("PrintWriter issue");
             //e.printStackTrace();
-
         }
     }
-
 
     // #####################################################################
     // This method will trim any blank line and a single line comment that has no spaces (a common case)
@@ -41,41 +42,36 @@ public class CodeStripper {
             String theCurrentLine = scanner.nextLine();
 
             if (theCurrentLine.equals("\n")) {
-                System.out.print("");
+                continue;
 
             } else if (theCurrentLine.trim().length() == 0) {
-                System.out.print("");
+                continue;
 
             } else {
                 builder.append(theCurrentLine + "\n");
             }
         } //end of while
 
+        //ArrayList<Character> list = new ArrayList<Character>();
 
         trimmedString = builder.toString();
-
+        commentsStripper(trimmedString);
         //System.out.println("===========Blank Lines Removed========== \n" + trimmedString);
 
-        commentsStripper(trimmedString);
-
-
-        //ArrayList<Character> list = new ArrayList<Character>();
         //testing
-        //PrintWriter tpw = new PrintWriter("zzzzzz.txt");
+        //PrintWriter tpw = new PrintWriter("zzz.txt");
         //tpw.print(trimmedString);
         //tpw.close();
-
     }
 
     // #####################################################################
     // This enum will be used to change the flag with each iteration with each character
-    // String flag is inessential for cases such as when having a comment character within a string
+    // String flag is inessential for cases such as when having //  or /* within a string
     enum Flag {
         POSSIBLE_COMMENT, LINE_COMMENT, BLOCK_COMMENT, IN_STRING, CODE
     }
 
-
-    // ##########################################################
+    // #####################################################################
     public void commentsStripper(String str) {
 
         Flag flag = Flag.CODE;
@@ -93,10 +89,10 @@ public class CodeStripper {
             if (i != 0) {
                 previousChar = currentChar;
             }
-
             if (i != str.length() - 1) {
                 nextChar = str.charAt(i + 1);
             }
+
             switch (flag) {
                 case CODE:
                     if (currentChar == '/')
@@ -116,7 +112,6 @@ public class CodeStripper {
                     } else {
                         flag = Flag.CODE;
                         strBldr.append(String.valueOf(previousChar) + String.valueOf(currentChar));
-
                     }
                     break;
                 case IN_STRING:
@@ -129,7 +124,6 @@ public class CodeStripper {
                         flag = Flag.CODE;
                         // strBldr.append("\n");
                     }
-
                     break;
                 case LINE_COMMENT:
                     if (currentChar == '\n') {

@@ -1,6 +1,5 @@
-/**
- * Created by ali on 1/23/16.
- */
+// Ali Hamodi
+// Principles of programming languages
 public class Main {
 
     public static void main(String args[]) {
