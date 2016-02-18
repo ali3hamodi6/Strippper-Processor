@@ -24,7 +24,7 @@ public class CodeStripper {
 
         } catch (Exception e) {
             System.out.println("PrintWriter issue");
-            e.printStackTrace();
+            //e.printStackTrace();
 
         }
     }
@@ -49,13 +49,12 @@ public class CodeStripper {
             } else {
                 builder.append(theCurrentLine + "\n");
             }
-        }//end of while
+        } //end of while
 
 
         trimmedString = builder.toString();
 
-        System.out.println("==============Blank Lines Removed================= \n" + trimmedString +
-                "================================================");
+        //System.out.println("===========Blank Lines Removed========== \n" + trimmedString);
 
         commentsStripper(trimmedString);
 
@@ -155,10 +154,9 @@ public class CodeStripper {
                 continue;
             }
             moreStrippedString.append(line.concat("\n"));
-        }
+        }// end of while
 
         finalString = moreStrippedString.toString();
-
 
     }
 

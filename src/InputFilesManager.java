@@ -11,41 +11,38 @@ public class InputFilesManager {
         generateInputFileNames();
     }
 
+    // #####################################################################
     public void generateInputFileNames() {
 
-//        int NUMBER_OF_MY_FILES = 13;
-//        String[] letters = {"a", "b", "c", "d"};
-//
-//        for (int i = 1; i <= NUMBER_OF_MY_FILES; i++) {
-//            StringBuilder stbr = new StringBuilder();
-//            String theNum = String.valueOf(i);
-//            stbr.append("striptest-");
-//            stbr.append(theNum);
-//
-//            if (i == 10) {
-//                stbr.append("a");
-//            }
-//            if (i == 11) {
-//                stbr.append("a");
-//            }
-//            if (i == 12) {
-//                stbr.append("a");
-//            }
-//            if (i == 13) {
-//                stbr.append("a");
-//            }
-//
-//            stbr.append(".txt");
-//            System.out.println("input file is "+stbr.toString());
-//            inputFilesGenerator(stbr.toString());
-//
-//        }
-    inputFilesGenerator("striptest-13a.txt");
+        for (int i = 1; i <= NUMBER_OF_FIlES; i++) {
+            if (i > 9) {
+                // this for loop is to generate 10a 10b 10c 10d   11a 11b 11c 11d ... 12a 12b 12c 12d
+                for (int j = 0; j < letters.length; j++) {
+                    StringBuilder stbr = new StringBuilder();
+                    String theNum = String.valueOf(i);
+                    stbr.append("striptest-");
+                    stbr.append(theNum);
 
+                    stbr.append(letters[j]);
+                    stbr.append(".txt");
+                    System.out.println(stbr.toString());
+                    inputFilesGenerator(stbr.toString());
+                }
 
+            } else {
+                StringBuilder stbr = new StringBuilder();
+                String theNum = String.valueOf(i);
+                stbr.append("striptest-");
+                stbr.append(theNum);
+
+                stbr.append(".txt");
+                System.out.println(stbr.toString());
+                inputFilesGenerator(stbr.toString());
+            }
+        } // end of for
     }
 
-
+    // #####################################################################
     public void inputFilesGenerator(String str) {
 
         try {
@@ -55,12 +52,10 @@ public class InputFilesManager {
 
         } catch (Exception e) {
 
-            System.out.println("Input file issue #################################################");
-            e.printStackTrace();
+            System.out.println("Input file is not found");
+            //e.printStackTrace();
         }
 
-
     }
-
 
 }
