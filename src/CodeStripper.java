@@ -9,8 +9,6 @@ public class CodeStripper {
     private String finalString;
     private PrintWriter pw;
     Scanner scanner;
-    Verifier verifier;
-
 
     public CodeStripper(File file, Scanner scan) {
         this.file = file;
@@ -29,12 +27,10 @@ public class CodeStripper {
             e.printStackTrace();
 
         }
-        verifier = new Verifier(inputFileName, outputFileName);
-
     }
 
 
-    // ##########################################################
+    // #####################################################################
     // This method will trim any blank line and a single line comment that has no spaces (a common case)
     public void LinesTrimmer() throws IOException {
 
@@ -72,7 +68,7 @@ public class CodeStripper {
 
     }
 
-    // ##########################################################
+    // #####################################################################
     // This enum will be used to change the flag with each iteration with each character
     // String flag is inessential for cases such as when having a comment character within a string
     enum Flag {
@@ -86,85 +82,87 @@ public class CodeStripper {
         Flag flag = Flag.CODE;
 
         StringBuilder strBldr = new StringBuilder();
-         previousChar = "";
-        String currentChar = "";
-        String nextChar = "";
+        char previousChar = ' ';
+        char currentChar = ' ';
+        char nextChar = ' ';
         // boolean inString = false; // Used to prevent trimming cases such as System.out.println("http://example.com")
 
+
         for (int i = 0; i < str.length(); i++) {
-            currentChar = str.substring(i,i+1);
+            currentChar = str.charAt(i);
+
+            if (i != 0) {
+                previousChar = currentChar;
+            }
+
             if (i != str.length() - 1) {
-                nextChar = str.substring((i + 1),(i+2));
+                nextChar = str.charAt(i + 1);
             }
             switch (flag) {
                 case CODE:
-                    if (currentChar == "/")
+                    if (currentChar == '/')
                         flag = Flag.POSSIBLE_COMMENT;
                     else {
-                        if (currentChar == "\"") {
+                        if (currentChar == '"') {
                             flag = Flag.IN_STRING;
                         }
                         strBldr.append(currentChar);
                     }
                     break;
                 case POSSIBLE_COMMENT:
-                    if (currentChar == "/") {
+                    if (currentChar == '/') {
                         flag = Flag.LINE_COMMENT;
-                    } else if (currentChar == "*") {
+                    } else if (currentChar == '*') {
                         flag = Flag.BLOCK_COMMENT;
                     } else {
                         flag = Flag.CODE;
-                        strBldr.append(previousChar + currentChar);
+                        strBldr.append(String.valueOf(previousChar) + String.valueOf(currentChar));
 
                     }
                     break;
                 case IN_STRING:
-                    if (currentChar == "\"")
+                    if (currentChar == '"')
                         flag = Flag.CODE;
                     strBldr.append(currentChar);
                     break;
                 case BLOCK_COMMENT:
-                    if (currentChar == "*" && nextChar =="/") {
-
+                    if (currentChar == '*' && nextChar == '/') {
                         flag = Flag.CODE;
-                        strBldr.append("\n");
+                        // strBldr.append("\n");
                     }
 
                     break;
                 case LINE_COMMENT:
-                    if (currentChar == "\n") {
+                    if (currentChar == '\n') {
                         flag = Flag.CODE;
                         strBldr.append(currentChar);
                     }
                     break;
             }//end of switch
-            previousChar = currentChar;
-            //currentChar=nextChar;
         }//end of for
 
         String strippedString = strBldr.toString();
 
-        System.out.println("");
-        System.out.println("######### xxxxx ###########\n" + strippedString + "\n######### xxxxxx ############" + "\n\n");
+        //System.out.println("###### comments Trimmed ########\n" + strippedString + "##################");
 
         StringBuilder moreStrippedString = new StringBuilder();
         Scanner scanner = new Scanner(strippedString);
 
-        // this while loop is to trim blank lines generated from trimming comments
+        // this while loop will trim blank lines generated from trimming comments precedented by spaces or tabs
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             if (line.trim().length() == 0) {
                 continue;
             }
-            moreStrippedString.append(line);
+            moreStrippedString.append(line.concat("\n"));
         }
 
         finalString = moreStrippedString.toString();
 
 
     }
-    // ##########################################################
 
+    // ##########################################################
     public void setOutputFileName() {
 
         inputFileName = file.getName();
